@@ -45,3 +45,16 @@ def prepare_study2_splits(dataset: DatasetDict, label_field, validation_size=0.1
         stratify_by_column=label_field,
     )
     return split["train"], split["test"], dataset["test"]
+
+
+def require_standard_splits(dataset: DatasetDict):
+    """Compatibility wrapper for checkouts using the original helper name.
+
+    The first Study 2 revision required a published validation split. Keeping
+    this name prevents a partially updated checkout from silently retaining
+    that obsolete behavior; it now delegates to the canonical split policy.
+    New code should call :func:`prepare_study2_splits` with its known label
+    field instead.
+    """
+    _, label_field, _ = infer_schema(dataset)
+    return prepare_study2_splits(dataset, label_field)

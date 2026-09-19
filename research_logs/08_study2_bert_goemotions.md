@@ -25,7 +25,13 @@ Not run because remote Hugging Face artifacts were blocked. No metrics or checkp
 The model-specific tokenizer is intentionally retained; all experimental policy settings otherwise match GPT-2.
 
 ## Problems encountered
-The configured proxy returned HTTP 403 for Hugging Face access.
+The configured proxy returned HTTP 403 for Hugging Face access. When
+`BertModel` is loaded from the upstream pretraining checkpoint, Transformers
+may report the `cls.predictions.*` and `cls.seq_relationship.*` keys as
+unexpected. Those keys belong to BERT's masked-language-model and
+next-sentence-prediction pretraining heads; this study intentionally loads the
+backbone and supplies its own seven-class head, so that load report is not a
+training error.
 
 ## Interpretation
 No comparison is possible until both complete runs exist.
