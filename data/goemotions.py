@@ -23,12 +23,25 @@ def infer_schema(dataset: DatasetDict):
     return text_fields[0], label_fields[0], list(label_feature.names)
 
 
-def require_standard_splits(dataset: DatasetDict):
-    required = {"train", "validation", "test"}
-    missing = required.difference(dataset.keys())
-    if missing:
+def prepare_study2_splits(dataset: DatasetDict, label_field, validation_size=0.1):
+    """Return the one canonical split policy used by both Study 2 models.
+
+    The published dataset has train and test splits but no validation split.
+    Preserve its held-out test set and stratify 10% of the published training
+    split into validation data with seed 42. If a future dataset revision adds
+    validation data, use all three published splits without resplitting them.
+    """
+    if "train" not in dataset or "test" not in dataset:
         raise ValueError(
-            f"Dataset is missing {sorted(missing)}. Inspect it before defining a shared "
-            "seed-42 stratified split; do not train with model-specific splits."
+            "Study 2 requires published train and test splits; got "
+            f"{sorted(dataset.keys())}."
         )
-    return dataset["train"], dataset["validation"], dataset["test"]
+    if "validation" in dataset:
+        return dataset["train"], dataset["validation"], dataset["test"]
+
+    split = dataset["train"].train_test_split(
+        test_size=validation_size,
+        seed=SEED,
+        stratify_by_column=label_field,
+    )
+    return split["train"], split["test"], dataset["test"]

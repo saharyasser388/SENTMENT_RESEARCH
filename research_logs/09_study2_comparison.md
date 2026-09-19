@@ -21,7 +21,7 @@ Both planned runs use seed 42, 3 epochs, batch size 8, AdamW at 2e-5 with weight
 GPT-2 uses its last real token; BERT uses its `[CLS]` hidden state. Both attach a 768-to-7 linear classifier.
 
 ## Dataset
-Both entry points call the same loader and require upstream train/validation/test splits. Exact sizes and class mapping remain pending successful inspection.
+Both entry points call the same loader. They preserve the published test set and use the same seed-42 stratified 90/10 partition of the published training split for training and validation. Exact resulting sizes and class mapping remain pending a recorded inspection run.
 
 ## What changed
 A common multiclass evaluator reports accuracy, macro precision/recall/F1, weighted F1, ordered per-class scores, and a 7-by-7 confusion matrix.

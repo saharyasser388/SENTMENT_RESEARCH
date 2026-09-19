@@ -8,7 +8,7 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from transformers import DataCollatorWithPadding
-from data.goemotions import infer_schema, load_goemotions, require_standard_splits
+from data.goemotions import infer_schema, load_goemotions, prepare_study2_splits
 from training.evaluate_multiclass import evaluate_multiclass
 
 SEED = 42
@@ -29,7 +29,7 @@ def seed_everything():
 def make_loaders(tokenizer, max_length=MAX_LENGTH, batch_size=BATCH_SIZE):
     dataset = load_goemotions()
     text_field, label_field, label_names = infer_schema(dataset)
-    train, validation, test = require_standard_splits(dataset)
+    train, validation, test = prepare_study2_splits(dataset, label_field)
 
     def tokenize(batch):
         return tokenizer(batch[text_field], truncation=True, max_length=max_length)

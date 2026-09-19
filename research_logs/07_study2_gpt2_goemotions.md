@@ -13,7 +13,7 @@ Seed 42; 3 epochs; batch size 8; AdamW; learning rate 2e-5; weight decay 0.01; c
 Custom pretrained GPT-2 Small, last non-padding token representation, and `Linear(768, 7)`. All parameters are trainable.
 
 ## Dataset
-The exact validated upstream train/validation/test splits are shared with BERT through `data/goemotions.py`.
+The published test split is retained. The published training split is divided identically for both models into stratified 90% training and 10% validation partitions with seed 42 through `data/goemotions.py`.
 
 ## What changed
 Added a seven-class smoke test, training entry point, checkpoint metadata, and held-out checkpoint evaluator. The existing generic classifier remains backward compatible with Study 1's two-class default.

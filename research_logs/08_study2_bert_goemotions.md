@@ -13,7 +13,7 @@ Seed 42; 3 epochs; batch size 8; AdamW; learning rate 2e-5; weight decay 0.01; c
 Hugging Face `google-bert/bert-base-uncased`; first-token (`[CLS]`) final hidden state; `Linear(768, 7)`. All parameters are trainable.
 
 ## Dataset
-Exactly the same validated dataset objects and split loader as GPT-2.
+Exactly the same published test split and seed-42 stratified 90/10 training/validation partition as GPT-2, produced by the shared split helper.
 
 ## What changed
 Added the model, pretrained-load smoke test, training entry point, and held-out evaluation script.

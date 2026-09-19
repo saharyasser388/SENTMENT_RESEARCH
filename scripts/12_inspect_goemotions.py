@@ -1,6 +1,6 @@
 from collections import Counter
 from datasets import ClassLabel
-from data.goemotions import infer_schema, load_goemotions
+from data.goemotions import infer_schema, load_goemotions, prepare_study2_splits
 
 
 def main():
@@ -18,8 +18,16 @@ def main():
         print("Examples:", split.select(range(min(3, len(split))))[:])
         counts = Counter(split[label_field])
         print("Class distribution:", {label_names[i]: counts[i] for i in range(len(label_names))})
-    required = {"train", "validation", "test"}
-    print("Custom split needed:", not required.issubset(dataset.keys()))
+    custom_split_needed = "validation" not in dataset
+    print("Custom validation split needed:", custom_split_needed)
+    train, validation, test = prepare_study2_splits(dataset, label_field)
+    print("Final shared split sizes:")
+    print("Train:", len(train))
+    print("Validation:", len(validation))
+    print("Test:", len(test))
+    if custom_split_needed:
+        print("Split policy: stratified 90/10 split of published train, seed 42")
+        print("The published test split remains unchanged.")
 
 
 if __name__ == "__main__":
