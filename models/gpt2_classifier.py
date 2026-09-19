@@ -63,7 +63,7 @@ class GPT2Classifier(nn.Module):
 
 
         # ---------------------------------------------
-        # 4. Predict sentiment
+        # 4. Predict class
         # ---------------------------------------------
 
         logits = self.classifier(
@@ -71,6 +71,6 @@ class GPT2Classifier(nn.Module):
         )
 
         # Shape:
-        # [batch_size, 2]
+        # [batch_size, num_classes]
 
         return logits
