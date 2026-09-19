@@ -1,5 +1,13 @@
 # Study 2: GPT-2 vs BERT Comparison
 
+> **Status: results not yet available.** The result cells below are not hidden
+> elsewhere in the repository: neither training run completed because this
+> environment could not download the dataset or pretrained models. After both
+> runs complete, their machine-readable results will be written beside the
+> checkpoints as `*.results.json`. Run
+> `python -m scripts.19_compare_goemotions_results` to print the comparison
+> table and per-class scores. The command fails loudly if either run is absent.
+
 ## Objective
 Compare decoder-only GPT-2 Small and encoder-only BERT-base-uncased on one seven-class GoEmotions-Ekman task.
 
@@ -19,6 +27,9 @@ Both entry points call the same loader and require upstream train/validation/tes
 A common multiclass evaluator reports accuracy, macro precision/recall/F1, weighted F1, ordered per-class scores, and a 7-by-7 confusion matrix.
 
 ## Results
+
+There are currently no measured comparison results. The following table is a
+report template, not a completed experiment.
 | Metric | GPT-2 | BERT-base-uncased |
 | --- | ---: | ---: |
 | Parameters | Not measured | Not measured |

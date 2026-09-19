@@ -93,6 +93,27 @@ def train(model, tokenizer, checkpoint_path, model_name, max_length=MAX_LENGTH):
     model.load_state_dict(checkpoint["model_state_dict"])
     test_results = evaluate_multiclass(model, test_loader, device, criterion, NUM_CLASSES)
     print_results("Held-out test", test_results, label_names)
+    result_path = f"{checkpoint_path}.results.json"
+    result_record = {
+        "model_name": model_name,
+        "parameter_count": sum(parameter.numel() for parameter in model.parameters()),
+        "best_epoch": checkpoint["epoch"],
+        "configuration": {
+            "seed": SEED,
+            "epochs": EPOCHS,
+            "batch_size": BATCH_SIZE,
+            "learning_rate": LEARNING_RATE,
+            "weight_decay": WEIGHT_DECAY,
+            "max_length": max_length,
+            "checkpoint_metric": "validation macro_f1",
+        },
+        "label_names": label_names,
+        "validation": checkpoint["validation_results"],
+        "test": test_results,
+    }
+    with open(result_path, "w", encoding="utf-8") as result_file:
+        json.dump(result_record, result_file, indent=2)
+    print("Machine-readable results:", result_path)
     print("Best epoch:", checkpoint["epoch"])
     print("Training and evaluation seconds:", time.perf_counter() - started)
     if use_amp:
